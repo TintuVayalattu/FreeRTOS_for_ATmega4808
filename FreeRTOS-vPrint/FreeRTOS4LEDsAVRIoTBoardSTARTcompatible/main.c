@@ -41,11 +41,13 @@ TO MICROCHIP FOR THIS SOFTWARE.
 #include "config/clock_config.h"
 #include <util/delay.h>
 void vSenderTask(void *pvParams);
+void vSenderTask2(void *pvParams);
 void vReceiverTask(void *pvParams);
 void vPrintString(void *pvParams);
 
 QueueHandle_t xPrintQueue;
 char msg[] = "This is the Message\r\n";
+char msg2[] = "This is the Message two\r\n";
 char *ptr = msg;
 extern char command[10];
 
@@ -56,6 +58,7 @@ int main(void)
 	xPrintQueue = xQueueCreate(5,2);
 	/* Task Registration and creation */
 	xTaskCreate(vSenderTask, "sender", configMINIMAL_STACK_SIZE, (void *)msg, 1, NULL);
+	xTaskCreate(vSenderTask2, "sender2", configMINIMAL_STACK_SIZE, (void *)msg2, 1, NULL);
 	xTaskCreate(vReceiverTask, "receiver", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 	
 	vTaskStartScheduler();
@@ -70,22 +73,37 @@ void vSenderTask(void *pvParams)
 		{
 			xQueueSend(xPrintQueue,(void *)&pvParams,0);
 		}
+		vTaskDelay(pdMS_TO_TICKS(1000));
+	}
+}
+
+void vSenderTask2(void *pvParams)
+{
+	for (;;)
+	{
+		if (strlen((char*)pvParams)>0)
+		{
+			xQueueSend(xPrintQueue,(void *)&pvParams,0);
+		}
 		vTaskDelay(pdMS_TO_TICKS(500));
 	}
 }
+
 void vReceiverTask(void *pvParams)
 {
 	char *ptr=NULL;
 	for (;;)
 	{
 		if( xQueueReceive(xPrintQueue,(void *)&ptr,100) == pdPASS )
-		vPrintString((void *)ptr);
+		{
+			vPrintString((void *)ptr);
+		}
 	}
 }
 
 void vPrintString(void *pvParams)
 {
-	ENTER_CRITICAL();
+	vTaskSuspendAll();
 	printf((const char *)pvParams);
-	EXIT_CRITICAL();
+	xTaskResumeAll();
 }

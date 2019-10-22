@@ -79,37 +79,25 @@ void (*USART_0_rx_isr_cb)(void) = &USART_0_default_rx_isr_cb;
 void USART_0_default_udre_isr_cb(void);
 void (*USART_0_udre_isr_cb)(void) = &USART_0_default_udre_isr_cb;
 
-char command[10];
+char command[32] = "abcd";
+void *buffPtr = command;
 	
 void USART_0_default_rx_isr_cb(void)
 {
 	uint8_t data;
-	uint8_t tmphead;
-
+	static uint8_t index = 0;
+	extern QueueHandle_t xPrintQueue;
+	
 	/* Read the received data */
 	data = USART2.RXDATAL;
-	/* Calculate buffer index */
-	tmphead = (USART_0_rx_head + 1) & USART_0_RX_BUFFER_MASK;
+	command[index++] = data;
 
-	if (tmphead == USART_0_rx_tail) {
-		/* ERROR! Receive buffer overflow */
-	} else {
-		/* Store new index */
-		USART_0_rx_head = tmphead;
-
-		/* Store received data in buffer */
-		USART_0_rxbuf[tmphead] = data;
-		if(data == '\n')
-		{
-			USART_0_rxbuf[tmphead+1] = '\0';
-			strcpy(command,(const char *)"Test");
-			//xQueueSendFromISR(xPrintQueue,(void *)&command,0);
-			USART_0_rx_elements = 0;
-			USART_0_rx_head  = 0;
-			GREEN_LED_toggle_level();
-			return;
-		}
-		USART_0_rx_elements++;
+	if(data == '\n')
+	{
+		command[index] = '\0';
+		xQueueSendFromISR(xPrintQueue,(void *)&buffPtr,0);
+		GREEN_LED_toggle_level();
+		index = 0;
 	}
 }
 
