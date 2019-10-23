@@ -24,13 +24,7 @@ src/usart_basic.d src/usart_basic.o: ../src/usart_basic.c \
  ../include/bod.h ../include/atmel_start_pins.h ../utils/atomic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- ../freeRTOS/include/FreeRTOS.h ../FreeRTOSConfig.h \
- ../config/clock_config.h ../freeRTOS/include/projdefs.h \
- ../freeRTOS/include/portable.h \
- ../freeRTOS/include/deprecated_definitions.h \
- ../freeRTOS/portable/GCC/ATmega4809/portmacro.h \
- ../freeRTOS/include/mpu_wrappers.h ../freeRTOS/include/queue.h
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h
 
 ../utils/compiler.h:
 
@@ -99,21 +93,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
-
-../freeRTOS/include/FreeRTOS.h:
-
-../FreeRTOSConfig.h:
-
-../config/clock_config.h:
-
-../freeRTOS/include/projdefs.h:
-
-../freeRTOS/include/portable.h:
-
-../freeRTOS/include/deprecated_definitions.h:
-
-../freeRTOS/portable/GCC/ATmega4809/portmacro.h:
-
-../freeRTOS/include/mpu_wrappers.h:
-
-../freeRTOS/include/queue.h:

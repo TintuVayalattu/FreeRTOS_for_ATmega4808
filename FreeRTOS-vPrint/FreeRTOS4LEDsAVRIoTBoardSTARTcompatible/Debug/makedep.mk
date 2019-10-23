@@ -30,6 +30,8 @@ freeRTOS\timers.c
 
 main.c
 
+serial.c
+
 src\bod.c
 
 src\clkctrl.c

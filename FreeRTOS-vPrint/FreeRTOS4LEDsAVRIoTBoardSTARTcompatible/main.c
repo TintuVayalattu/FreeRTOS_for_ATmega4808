@@ -26,6 +26,7 @@ TO MICROCHIP FOR THIS SOFTWARE.
 #include "config/clock_config.h"
 #include <util/delay.h>
 #include "cli.h"
+#include "serial.h"
 
 /* Scheduler include files. */
 #include "FreeRTOS.h"
@@ -49,6 +50,7 @@ extern char command[10];
 int main(void)
 {
 	atmel_start_init();
+	USART_0_set_ISR_cb( &serialHandler,RX_CB );
 	
 	xPrintQueue = xQueueCreate(5,2);
 	xCommandQueue = xQueueCreate(5,2);

@@ -42,9 +42,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "FreeRTOS.h"
-#include "queue.h"
-
 #if defined(__GNUC__)
 
 int USART_0_printCHAR(char character, FILE *stream)
@@ -78,27 +75,10 @@ void USART_0_default_rx_isr_cb(void);
 void (*USART_0_rx_isr_cb)(void) = &USART_0_default_rx_isr_cb;
 void USART_0_default_udre_isr_cb(void);
 void (*USART_0_udre_isr_cb)(void) = &USART_0_default_udre_isr_cb;
-
-char command[32] = "abcd";
-void *buffPtr = command;
 	
 void USART_0_default_rx_isr_cb(void)
 {
-	uint8_t data;
-	static uint8_t index = 0;
-	extern QueueHandle_t xCommandQueue;
-	
-	/* Read the received data */
-	data = USART2.RXDATAL;
-	command[index++] = data;
 
-	if(data == '\n')
-	{
-		command[index-2] = '\0';// avoid /r/n
-		xQueueSendFromISR(xCommandQueue,(void *)&buffPtr,0);
-		GREEN_LED_toggle_level();
-		index = 0;
-	}
 }
 
 void USART_0_default_udre_isr_cb(void)
