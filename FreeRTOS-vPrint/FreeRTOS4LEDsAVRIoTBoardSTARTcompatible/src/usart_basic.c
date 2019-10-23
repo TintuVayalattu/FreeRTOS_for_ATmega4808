@@ -86,7 +86,7 @@ void USART_0_default_rx_isr_cb(void)
 {
 	uint8_t data;
 	static uint8_t index = 0;
-	extern QueueHandle_t xPrintQueue;
+	extern QueueHandle_t xCommandQueue;
 	
 	/* Read the received data */
 	data = USART2.RXDATAL;
@@ -94,8 +94,8 @@ void USART_0_default_rx_isr_cb(void)
 
 	if(data == '\n')
 	{
-		command[index] = '\0';
-		xQueueSendFromISR(xPrintQueue,(void *)&buffPtr,0);
+		command[index-2] = '\0';// avoid /r/n
+		xQueueSendFromISR(xCommandQueue,(void *)&buffPtr,0);
 		GREEN_LED_toggle_level();
 		index = 0;
 	}

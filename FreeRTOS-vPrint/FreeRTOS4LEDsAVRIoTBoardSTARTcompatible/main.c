@@ -23,26 +23,21 @@ TO MICROCHIP FOR THIS SOFTWARE.
 #include <atomic.h>
 #include <string.h>
 #include "atmel_start.h"
+#include "config/clock_config.h"
+#include <util/delay.h>
+#include "cli.h"
 
 /* Scheduler include files. */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
-#include "stream_buffer.h"
-#include "message_buffer.h"
-#include "semphr.h"
 
 /* Tasks */
-#include "LED.h"
-
-#include "config/clock_config.h"
-#include <util/delay.h>
-
-#include "config/clock_config.h"
-#include <util/delay.h>
 void vSenderTask(void *pvParams);
 void vSenderTask2(void *pvParams);
 void vReceiverTask(void *pvParams);
+
+/* Function prototypes */
 void vPrintString(void *pvParams);
 
 QueueHandle_t xPrintQueue;
@@ -56,10 +51,12 @@ int main(void)
 	atmel_start_init();
 	
 	xPrintQueue = xQueueCreate(5,2);
+	xCommandQueue = xQueueCreate(5,2);
 	/* Task Registration and creation */
 	xTaskCreate(vSenderTask, "sender", configMINIMAL_STACK_SIZE, (void *)msg, 1, NULL);
 	xTaskCreate(vSenderTask2, "sender2", configMINIMAL_STACK_SIZE, (void *)msg2, 1, NULL);
 	xTaskCreate(vReceiverTask, "receiver", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+	xTaskCreate(vCommandReceiverTask, "cmd receiver", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 	
 	vTaskStartScheduler();
 	return 0;

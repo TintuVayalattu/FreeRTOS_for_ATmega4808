@@ -55,6 +55,7 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../atmel_start.c \
+../cli.c \
 ../driver_isr.c \
 ../examples/src/usart_basic_example.c \
 ../freeRTOS/croutine.c \
@@ -84,6 +85,7 @@ ASM_SRCS +=
 
 OBJS +=  \
 atmel_start.o \
+cli.o \
 driver_isr.o \
 examples/src/usart_basic_example.o \
 freeRTOS/croutine.o \
@@ -106,6 +108,7 @@ src/usart_basic.o
 
 OBJS_AS_ARGS +=  \
 atmel_start.o \
+cli.o \
 driver_isr.o \
 examples/src/usart_basic_example.o \
 freeRTOS/croutine.o \
@@ -128,6 +131,7 @@ src/usart_basic.o
 
 C_DEPS +=  \
 atmel_start.d \
+cli.d \
 driver_isr.d \
 examples/src/usart_basic_example.d \
 freeRTOS/croutine.d \
@@ -150,6 +154,7 @@ src/usart_basic.d
 
 C_DEPS_AS_ARGS +=  \
 atmel_start.d \
+cli.d \
 driver_isr.d \
 examples/src/usart_basic_example.d \
 freeRTOS/croutine.d \
@@ -185,6 +190,13 @@ LINKER_SCRIPT_DEP+=
 
 # AVR32/GNU C Compiler
 ./atmel_start.o: .././atmel_start.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../include" -I"../utils" -I"../utils/assembler" -I"../freeRTOS/portable/MemMang" -I"../OLED" -I"../freeRTOS/portable/GCC/ATmega4809" -I"../freeRTOS/include" -I".." -I"../examples/include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\include" -I"../Config"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4808 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega4808" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./cli.o: .././cli.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../include" -I"../utils" -I"../utils/assembler" -I"../freeRTOS/portable/MemMang" -I"../OLED" -I"../freeRTOS/portable/GCC/ATmega4809" -I"../freeRTOS/include" -I".." -I"../examples/include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\include" -I"../Config"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4808 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega4808" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

@@ -4,6 +4,8 @@
 
 atmel_start.c
 
+cli.c
+
 driver_isr.c
 
 examples\src\usart_basic_example.c
